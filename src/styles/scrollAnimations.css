@@ -9,6 +9,17 @@
   }
 }
 
+@keyframes from-on-to-past-start {
+  from {
+    opacity: 1;
+    color: #FFFBF9;
+  }
+  to {
+    opacity: 0.5;
+    color: #FFFBF9;
+  }
+}
+
 @keyframes from-on-to-past {
   from {
     opacity: 1;
