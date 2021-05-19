@@ -196,7 +196,7 @@ function Line({
     send(animationEvent)
   }, [send, currentLineNumber, lineNumber, poemStarted])
 
-  const lineCss = useLineCss(state.context.animation)
+  const lineCss = useLineCss(state.context.animation, currentLineNumber)
 
   return <span css={lineCss}>{children}</span>
 }
@@ -323,8 +323,7 @@ function useCurrentLineNumber() {
   return currentLineNumber
 }
 
-function useLineCss(animation: string) {
-  // Need to make media query also work with keyframe font size
+function useLineCss(animation: string, currentLineNumber: number) {
   const lineCss = useMemo(() => {
     return [
       tw`opacity-0 font-body absolute mx-auto left-0 right-0 text-center 
@@ -380,29 +379,15 @@ const animationMachine = createMachine(
   {
     actions: {
       fromBeforeToOn: assign({
-        animation: 'from-before-to-on 3s forwards ease-out',
+        animation: `from-before-to-on 3s ease-out 4s forwards`,
       }),
       fromOnToPast: assign({
-        /*The font sizes are 0.65 of the value of each of the following: text-xs, text-lg, text-2xl, text-3xl, text-4xl*/
-        /*The media query values come from tailwind.config*/
-        animation: `from-on-to-past 5s forwards cubic-bezier(
+        animation: ` 
+        from-on-to-past 7s cubic-bezier(
           ${random(0, 0.5)}, 
           ${random(0.5, 1)}, 
           ${random(0, 0.5)}, 
-          ${random(0.5, 1)}); 
-          font-size: 0.4875rem; 
-          @media (min-width: 475px) { 
-            font-size: 0.73125rem;
-          };
-          @media (min-width: 640px) { 
-            font-size: 0.975rem;
-          };
-          @media (min-width: 768px) { 
-            font-size: 1.21875rem;
-          };
-          @media (min-width: 1024px) { 
-            font-size: 1.4625rem;
-          };
+          ${random(0.5, 1)}) forwards; 
           `,
       }),
       reset: assign({
