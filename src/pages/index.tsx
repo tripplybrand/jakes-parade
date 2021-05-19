@@ -181,6 +181,8 @@ function Line({
     const animationEvent =
       !poemStarted && currentLineNumber === -1
         ? 'SCROLL_RESET'
+        : currentLineNumber === lineNumber && currentLineNumber === 0
+        ? 'SCROLL_ON_FIRST_LINE'
         : currentLineNumber === lineNumber
         ? 'SCROLL_ON'
         : currentLineNumber > lineNumber
@@ -196,7 +198,7 @@ function Line({
     send(animationEvent)
   }, [send, currentLineNumber, lineNumber, poemStarted])
 
-  const lineCss = useLineCss(state.context.animation, currentLineNumber)
+  const lineCss = useLineCss(state.context.animation)
 
   return <span css={lineCss}>{children}</span>
 }
@@ -323,7 +325,7 @@ function useCurrentLineNumber() {
   return currentLineNumber
 }
 
-function useLineCss(animation: string, currentLineNumber: number) {
+function useLineCss(animation: string) {
   const lineCss = useMemo(() => {
     return [
       tw`opacity-0 font-body absolute mx-auto left-0 right-0 text-center 
@@ -356,6 +358,10 @@ const animationMachine = createMachine(
     states: {
       beforeLine: {
         on: {
+          SCROLL_ON_FIRST_LINE: {
+            target: 'onLine',
+            actions: 'fromBeforeToOnFirstLine',
+          },
           SCROLL_ON: {
             target: 'onLine',
             actions: 'fromBeforeToOn',
@@ -378,6 +384,9 @@ const animationMachine = createMachine(
   },
   {
     actions: {
+      fromBeforeToOnFirstLine: assign({
+        animation: `from-before-to-on 3s ease-out forwards`,
+      }),
       fromBeforeToOn: assign({
         animation: `from-before-to-on 3s ease-out 4s forwards`,
       }),
