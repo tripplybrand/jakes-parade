@@ -27,7 +27,6 @@
       url('/fonts/Raleway/Raleway-Italic-VariableFont_wght-subset.woff2') format('woff2-variations');
 }
 
-/*Stops bounce effect and limits of scroll. Doesn't work in Safari.*/
 html {
   --translateX1: 0px;
   --translateX2: 50px;
@@ -35,6 +34,7 @@ html {
   --translateX4: 0px;
 }
 
+/*Stops bounce effect and limits of scroll. Doesn't work in Safari.*/
 html, body {
   overscroll-behavior: none;
 }
